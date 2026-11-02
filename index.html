@@ -15,7 +15,9 @@
 <meta name="theme-color" content="#C9A1F5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="EKONO PLAY">
-</head>
+<style>
+header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}body{padding-bottom:100px!important}header .bottom-nav{position:fixed!important;bottom:0;left:0;right:0;z-index:1000;background:rgba(255,249,238,.98);border-top:1px solid #E5D9ED;box-shadow:0 -5px 25px #2b214015;padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex!important;justify-content:center;flex-wrap:nowrap!important;gap:4px!important;overflow-x:auto}header .bottom-nav button,header .bottom-nav a{flex-shrink:0;font-size:12px!important;padding:10px 12px!important}@media(max-width:600px){header .bottom-nav{justify-content:flex-start}header .bottom-nav button,header .bottom-nav a{font-size:11px!important;padding:10px!important}}
+</style></head>
 <body>
 <x-dc>
 <helmet>
@@ -42,11 +44,12 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #8553
     <span style="font-size:38px;font-weight:700;letter-spacing:-2px">ekono<span style="color:#8553E5">•</span></span>
     <span style="font-size:8px;letter-spacing:2px;font-weight:600;margin-top:2px">LET’S PLAY EVERY DAY</span>
   </a>
-  <nav style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+  <nav class="bottom-nav" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
     <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
       <button onClick="{{ n.onClick }}" aria-current="{{ n.current }}" style="border:0;padding:10px 16px;border-radius:999px;font-size:14px;font-weight:{{ n.weight }};background:{{ n.bg }}" style-hover="background:{{ n.hover }}">{{ n.label }}</button>
     </sc-for>
     <button onClick="{{ toggleSavedOnly }}" aria-pressed="{{ savedOnly }}" style="display:flex;align-items:center;gap:6px;border:2px solid #2B2140;border-radius:999px;padding:8px 16px;font-size:14px;font-weight:600;background:{{ savedBtnBg }};color:{{ savedBtnColor }}">♥ <span>{{ savedCount }}</span></button>
+    <a href="./game-pop.html" style="padding:10px 14px;border-radius:99px;background:#E8D8FF;font-weight:700;white-space:nowrap">🎮 เกมส์ POP</a>
   </nav>
 </header>
 
