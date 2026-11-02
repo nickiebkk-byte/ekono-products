@@ -71,10 +71,10 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #8553
           <img src="{{ m.thumb }}" alt="{{ m.name }}" style="width:100%;display:block;filter:drop-shadow(0 14px 12px rgba(43,33,64,.18));animation:{{ m.anim }}">
         </button>
       </sc-for>
-      <div style="position:absolute;left:10%;top:2%;width:80%;z-index:1">
+      <div style="position:absolute;left:14%;top:0;width:72%;z-index:1">
         <img src="assets/besties-p11.png" alt="น้อง 04 และ 05 สองเพื่อนซี้อวกาศ EKONO" style="display:block;width:100%;filter:drop-shadow(0 22px 18px rgba(43,33,64,.22));animation:{{ floatA }}">
       </div>
-      <button onClick="{{ heroLead.onPick }}" aria-label="{{ heroLead.name }}" style="position:absolute;left:-4%;top:58%;width:34%;z-index:2;border:0;background:none;padding:0">
+      <button onClick="{{ heroLead.onPick }}" aria-label="{{ heroLead.name }}" style="position:absolute;left:0;top:72%;width:14.5%;z-index:2;border:0;background:none;padding:0">
         <img src="{{ heroLead.img }}" alt="{{ heroLead.name }}" style="width:100%;display:block;filter:drop-shadow(0 24px 18px rgba(43,33,64,.25));animation:{{ floatA }}">
       </button>
       <div style="position:absolute;right:-2%;top:-4%;z-index:3;width:120px;height:120px;border-radius:50%;background:#8553E5;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;font-weight:700;line-height:1.3;transform:rotate(-10deg);box-shadow:0 6px 0 #2B2140">SMALL THINGS.<br>BIG FUN! ✦</div>
@@ -377,7 +377,7 @@ class Component extends DCLogic {
     {id:'clean',no:'04 / CLEAN SPACE',t1:'ห้องคลีน',t2:'ฟีลดี',sub:'เติมความสบายให้ห้อง ↗',m:'12',bg:'#E9DEFF',title:'ห้องคลีนฟีลดี',items:['vacuum','tissue']}
   ];
   S = [['01','ลมเย็นพกไปทุกที่','fan','#FFD9D6'],['02','ชิลล์ที่บ้าน','fan','#E9DEFF'],['03','ข้าวสวยร้อนๆ','rice','#CFF3E2'],['04','มื้อหม้อเดียว','pot','#FFF0B0'],['05','ไข่นึ่งยามเช้า','egg','#E9DEFF'],['06','ปิ่นโตมื้อโปรด','lunchbox','#FFD9D6'],['07','ห้องคลีนฟีลดี','vacuum','#FFF0B0'],['08','ปิกนิกรับลม','fan','#CFF3E2']];
-  HERO_POS = [{left:'-2%',top:'6%',w:'20%'},{left:'30%',top:'74%',w:'22%'},{left:'54%',top:'74%',w:'22%'},{left:'78%',top:'62%',w:'24%'}];
+  HERO_POS = [{left:'17.1%',top:'72%',w:'14.5%'},{left:'34.2%',top:'72%',w:'14.5%'},{left:'51.3%',top:'72%',w:'14.5%'},{left:'68.4%',top:'72%',w:'14.5%'},{left:'85.5%',top:'72%',w:'14.5%'}];
 
   load() { try { const s = JSON.parse(localStorage.getItem('ekono-picks') || '[]'); return Array.isArray(s) ? s : []; } catch (e) { return []; } }
   state = { page: (()=>{ try { return localStorage.getItem('ekono-page') || 'home'; } catch (e) { return 'home'; } })(), saved: this.load(), filter:'all', query:'', savedOnly:false, kind:'all', vibe:null, buddy:'rice', modal:null, toast:'' };
