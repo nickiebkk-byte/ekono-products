@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+
+<title>EKONO PLAY</title>
+<link rel="icon" href="./icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png">
+<link rel="apple-touch-icon" sizes="167x167" href="./icons/icon-167.png">
+<link rel="apple-touch-icon" sizes="152x152" href="./icons/icon-152.png">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#C9A1F5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="EKONO PLAY">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:#FFF9EE;color:#2B2140;font-family:Prompt,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:inherit;text-decoration:none}
+a:hover{color:#8553E5}
+button,input{font-family:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #8553E5;outline-offset:3px}
+@keyframes ek-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes ek-wobble{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(4deg) translateY(-10px)}}
+@keyframes ek-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes ek-spin{to{transform:rotate(360deg)}}
+@keyframes ek-pop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+</style>
+</helmet>
+<header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px clamp(16px,4vw,48px);background:rgba(255,249,238,.88);backdrop-filter:blur(14px)">
+  <a href="#home" onClick="{{ goHome }}" style="display:flex;flex-direction:column;line-height:1">
+    <span style="font-size:38px;font-weight:700;letter-spacing:-2px">ekono<span style="color:#8553E5">•</span></span>
+    <span style="font-size:8px;letter-spacing:2px;font-weight:600;margin-top:2px">LET’S PLAY EVERY DAY</span>
+  </a>
+  <nav style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+    <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+      <button onClick="{{ n.onClick }}" aria-current="{{ n.current }}" style="border:0;padding:10px 16px;border-radius:999px;font-size:14px;font-weight:{{ n.weight }};background:{{ n.bg }}" style-hover="background:{{ n.hover }}">{{ n.label }}</button>
+    </sc-for>
+    <button onClick="{{ toggleSavedOnly }}" aria-pressed="{{ savedOnly }}" style="display:flex;align-items:center;gap:6px;border:2px solid #2B2140;border-radius:999px;padding:8px 16px;font-size:14px;font-weight:600;background:{{ savedBtnBg }};color:{{ savedBtnColor }}">♥ <span>{{ savedCount }}</span></button>
+  </nav>
+</header>
+
+<main id="home">
+<sc-if value="{{ pg.home }}" hint-placeholder-val="{{ true }}">
+<section style="padding:8px clamp(12px,3vw,32px) 0">
+  <div style="position:relative;overflow:hidden;background:#FFE45C;border-radius:48px;padding:clamp(28px,5vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:24px;align-items:center">
+    <div style="position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:#FFF0B0"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:22px;align-items:flex-start">
+      <span style="background:#2B2140;color:#FFE45C;border-radius:999px;padding:8px 16px;font-size:11px;letter-spacing:2px;font-weight:600">EKONO PLAY / YOUR EVERYDAY BUDDY</span>
+      <h1 style="margin:0;font-size:clamp(44px,6vw,88px);line-height:1.08;font-weight:800;letter-spacing:-1px;text-wrap:balance">เรื่องเล็กๆ ที่ทำให้ทุกวัน <span style="display:inline-block;background:#8553E5;color:#fff;border-radius:24px;padding:0 18px 6px;transform:rotate(-2deg);margin-top:8px">สนุกขึ้น!</span></h1>
+      <p style="margin:0;font-size:18px;line-height:1.7;max-width:440px">ของใช้คู่ใจ สีสันที่เป็นคุณ ไปใช้ชีวิตด้วยกันกับแก๊งน้อง EKONO</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button onClick="{{ goMatch }}" style="border:0;background:#2B2140;color:#fff;border-radius:999px;padding:16px 26px;font-size:16px;font-weight:600;box-shadow:0 6px 0 #8553E5" style-hover="transform:translateY(-2px)">หาคู่ใจของคุณ ↗</button>
+        <button onClick="{{ goRecipes }}" style="border:0;background:#fff;border-radius:999px;padding:16px 26px;font-size:16px;font-weight:600;box-shadow:0 6px 0 #2B2140" style-hover="transform:translateY(-2px)">เปิดสูตรลับ GEN Z ✦</button>
+      </div>
+      <span style="font-size:11px;letter-spacing:3px;font-weight:600">COOK. CHILL. CLEAN. REPEAT.</span>
+    </div>
+    <div style="position:relative;width:100%;max-width:600px;aspect-ratio:1/1;justify-self:center">
+      <sc-for list="{{ heroOthers }}" as="m" hint-placeholder-count="4">
+        <button onClick="{{ m.onPick }}" aria-label="{{ m.name }}" style="position:absolute;border:0;background:none;padding:0;left:{{ m.left }};top:{{ m.top }};width:{{ m.w }};z-index:1" style-hover="filter:brightness(1.05)">
+          <img src="{{ m.thumb }}" alt="{{ m.name }}" style="width:100%;display:block;filter:drop-shadow(0 14px 12px rgba(43,33,64,.18));animation:{{ m.anim }}">
+        </button>
+      </sc-for>
+      <div style="position:absolute;left:10%;top:2%;width:80%;z-index:1">
+        <img src="assets/besties-p11.png" alt="น้อง 04 และ 05 สองเพื่อนซี้อวกาศ EKONO" style="display:block;width:100%;filter:drop-shadow(0 22px 18px rgba(43,33,64,.22));animation:{{ floatA }}">
+      </div>
+      <button onClick="{{ heroLead.onPick }}" aria-label="{{ heroLead.name }}" style="position:absolute;left:-4%;top:58%;width:34%;z-index:2;border:0;background:none;padding:0">
+        <img src="{{ heroLead.img }}" alt="{{ heroLead.name }}" style="width:100%;display:block;filter:drop-shadow(0 24px 18px rgba(43,33,64,.25));animation:{{ floatA }}">
+      </button>
+      <div style="position:absolute;right:-2%;top:-4%;z-index:3;width:120px;height:120px;border-radius:50%;background:#8553E5;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;font-weight:700;line-height:1.3;transform:rotate(-10deg);box-shadow:0 6px 0 #2B2140">SMALL THINGS.<br>BIG FUN! ✦</div>
+    </div>
+  </div>
+</section>
+
+<sc-if value="{{ showTicker }}" hint-placeholder-val="{{ true }}">
+<div style="overflow:hidden;margin:24px 0 0;background:#8553E5;color:#fff;transform:rotate(-1.2deg);padding:14px 0">
+  <div style="display:flex;width:max-content;gap:40px;font-size:22px;font-weight:700;white-space:nowrap;animation:ek-marquee 26s linear infinite">
+    <span>YOUR COLOR. YOUR VIBE. YOUR EKONO. ✦ ใช้ชีวิตให้สนุก ในแบบของคุณ ✦ YOUR COLOR. YOUR VIBE. YOUR EKONO. ✦ ใช้ชีวิตให้สนุก ในแบบของคุณ ✦</span>
+    <span>YOUR COLOR. YOUR VIBE. YOUR EKONO. ✦ ใช้ชีวิตให้สนุก ในแบบของคุณ ✦ YOUR COLOR. YOUR VIBE. YOUR EKONO. ✦ ใช้ชีวิตให้สนุก ในแบบของคุณ ✦</span>
+  </div>
+</div>
+</sc-if>
+
+</sc-if>
+<sc-if value="{{ pg.buddies }}" hint-placeholder-val="{{ false }}">
+<section id="buddies" style="padding:72px clamp(16px,4vw,48px) 24px;max-width:1360px;margin:0 auto">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px">
+    <div>
+      <span style="font-size:12px;letter-spacing:2px;font-weight:600;color:#8553E5">YOUR LITTLE EVERYDAY BUDDIES</span>
+      <h2 style="margin:6px 0 0;font-size:clamp(34px,4.4vw,60px);line-height:1.1;font-weight:800">แก๊งตัวจิ๋ว พร้อมลุยทุกวัน!</h2>
+    </div>
+    <p style="margin:0;font-size:16px">แตะน้อง เพื่อรู้จักสินค้าคู่ใจ</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px">
+    <div style="position:relative;overflow:hidden;border-radius:44px;background:{{ buddy.bg }};min-height:480px;display:flex;align-items:center;justify-content:center;transition:background .4s">
+      <span style="position:absolute;left:20px;top:-10px;font-size:clamp(160px,22vw,300px);font-weight:800;line-height:1;letter-spacing:-10px;color:{{ buddy.deep }};opacity:.2">{{ buddy.num }}</span>
+      <div style="position:absolute;width:70%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.55)"></div>
+      <img key="{{ buddy.id }}" src="{{ buddy.img }}" alt="{{ buddy.name }}" style="position:relative;width:min(78%,440px);filter:drop-shadow(0 26px 20px rgba(43,33,64,.22));animation:ek-pop .45s ease-out">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px;justify-content:center;padding:8px clamp(0px,2vw,24px)">
+      <span style="align-self:flex-start;border-radius:999px;padding:6px 14px;font-size:12px;letter-spacing:1.5px;font-weight:700;color:#fff;background:{{ buddy.deep }}">EKONO FRIEND {{ buddy.num }}</span>
+      <h3 style="margin:0;font-size:clamp(36px,4vw,56px);line-height:1.1;font-weight:800">{{ buddy.name }}</h3>
+      <p style="margin:0;font-size:18px;line-height:1.7">{{ buddy.product }} · {{ buddy.line }}<br>{{ buddy.desc }}</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button onClick="{{ buddy.onOpen }}" style="border:0;border-radius:999px;padding:15px 24px;font-size:15px;font-weight:600;background:#2B2140;color:#fff" style-hover="background:#8553E5">รู้จักน้องคนนี้ ↗</button>
+        <button onClick="{{ buddy.onSave }}" style="border:2px solid #2B2140;border-radius:999px;padding:13px 22px;font-size:15px;font-weight:600;background:#fff" style-hover="background:#FFE2D6">{{ buddy.saveLabel }}</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:8px">
+        <sc-for list="{{ buddies }}" as="b" hint-placeholder-count="5">
+          <button onClick="{{ b.onPick }}" aria-label="{{ b.name }}" aria-pressed="{{ b.active }}" style="border:3px solid {{ b.ring }};border-radius:24px;background:{{ b.bg }};padding:6px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .2s" style-hover="transform:translateY(-4px) rotate(-3deg)">
+            <img src="{{ b.thumb }}" alt="" style="width:100%;aspect-ratio:1;object-fit:contain">
+            <span style="font-size:12px;font-weight:700">{{ b.num }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+</sc-if>
+<sc-if value="{{ pg.match }}" hint-placeholder-val="{{ false }}">
+<section id="match" style="padding:56px clamp(16px,4vw,48px);max-width:1360px;margin:0 auto">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px">
+    <div>
+      <span style="font-size:12px;letter-spacing:2px;font-weight:600;color:#8553E5">FIND YOUR EVERYDAY MATCH</span>
+      <h2 style="margin:6px 0 0;font-size:clamp(34px,4.4vw,60px);line-height:1.1;font-weight:800">วันนี้คุณเป็นสายไหน?</h2>
+    </div>
+    <p style="margin:0;font-size:16px">เลือกไลฟ์สไตล์ แล้วให้น้องช่วยแนะนำ</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px">
+    <sc-for list="{{ vibes }}" as="v" hint-placeholder-count="4">
+      <button onClick="{{ v.onPick }}" aria-pressed="{{ v.active }}" style="position:relative;overflow:hidden;text-align:left;border:3px solid {{ v.ring }};border-radius:36px;background:{{ v.bg }};padding:24px;min-height:300px;display:flex;flex-direction:column;gap:8px;transition:transform .2s" style-hover="transform:translateY(-6px)">
+        <span style="font-size:12px;letter-spacing:1.5px;font-weight:700">{{ v.no }}</span>
+        <strong style="font-size:30px;line-height:1.15;font-weight:800">{{ v.t1 }}<br>{{ v.t2 }}</strong>
+        <span style="font-size:14px">{{ v.sub }}</span>
+        <img src="{{ v.img }}" alt="" style="position:absolute;right:-24px;bottom:-30px;width:62%;filter:drop-shadow(0 10px 10px rgba(43,33,64,.15));transform:rotate(-8deg)">
+      </button>
+    </sc-for>
+  </div>
+  <sc-if value="{{ hasVibe }}" hint-placeholder-val="{{ false }}">
+    <div aria-live="polite" style="margin-top:16px;border-radius:32px;background:#2B2140;color:#fff;padding:24px 28px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;animation:ek-pop .35s ease-out">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <b style="font-size:20px">น้องแนะนำสำหรับสาย{{ vibeResult.title }}</b>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <sc-for list="{{ vibeResult.items }}" as="it" hint-placeholder-count="2">
+            <button onClick="{{ it.onOpen }}" style="display:flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:6px 18px 6px 6px;background:{{ it.bg }};color:#2B2140;font-size:15px;font-weight:600" style-hover="transform:translateY(-2px)">
+              <img src="{{ it.img }}" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;background:#fff">{{ it.name }} ↗
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ goRecipes }}" style="border:0;background:none;padding:0;color:#FFE45C;font-size:16px;font-weight:600">แวะดูสูตรลับ GEN Z ด้วยกัน ↗</button>
+    </div>
+  </sc-if>
+</section>
+
+</sc-if>
+<sc-if value="{{ pg.products }}" hint-placeholder-val="{{ false }}">
+<section id="products" style="padding:56px clamp(16px,4vw,48px);max-width:1360px;margin:0 auto">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+    <div>
+      <span style="font-size:12px;letter-spacing:2px;font-weight:600;color:#8553E5">MEET YOUR NEW BUDDIES</span>
+      <h2 style="margin:6px 0 0;font-size:clamp(34px,4.4vw,60px);line-height:1.1;font-weight:800">ของใช้ที่เข้ากับคุณ<span style="color:#8553E5">.</span></h2>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;border:2px solid #2B2140;border-radius:999px;background:#fff;padding:10px 18px;min-width:min(100%,280px)">
+      <span aria-hidden="true">⌕</span>
+      <input value="{{ query }}" onChange="{{ onSearch }}" placeholder="ค้นหาสินค้า / รุ่น" aria-label="ค้นหาสินค้า" style="border:0;outline:0;background:none;font-size:15px;width:100%">
+    </label>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
+    <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+      <button onClick="{{ f.onClick }}" style="border:2px solid #2B2140;border-radius:999px;padding:9px 18px;font-size:14px;font-weight:600;background:{{ f.bg }};color:{{ f.color }}">{{ f.label }}</button>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:18px">
+    <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+      <article onClick="{{ p.onOpen }}" style="cursor:pointer;background:#fff;border-radius:36px;overflow:hidden;box-shadow:0 2px 0 rgba(43,33,64,.06);transition:transform .2s" style-hover="transform:translateY(-6px)">
+        <div style="position:relative;background:{{ p.bg }};aspect-ratio:1/0.9;display:flex;align-items:center;justify-content:center;overflow:hidden">
+          <img src="{{ p.img }}" alt="{{ p.name }}" style="width:100%;height:100%;object-fit:{{ p.fit }};padding:{{ p.pad }}">
+          <button onClick="{{ p.onSave }}" aria-label="บันทึก {{ p.name }}" aria-pressed="{{ p.isSaved }}" style="position:absolute;top:14px;right:14px;width:48px;height:48px;border-radius:50%;border:0;background:#fff;font-size:22px;color:{{ p.heartColor }};box-shadow:0 3px 0 rgba(43,33,64,.15)" style-hover="transform:scale(1.1)">{{ p.heart }}</button>
+          <span style="position:absolute;left:14px;top:14px;background:#2B2140;color:#fff;border-radius:999px;padding:5px 12px;font-size:11px;letter-spacing:1px;font-weight:700">{{ p.label }}</span>
+        </div>
+        <div style="padding:20px 22px 24px;display:flex;flex-direction:column;gap:4px">
+          <h3 style="margin:0;font-size:21px;font-weight:700">{{ p.name }}</h3>
+          <span style="font-size:13px;color:#6B6378;font-weight:500">EKONO {{ p.model }}</span>
+          <p style="margin:6px 0 10px;font-size:15px;line-height:1.6">{{ p.desc }}</p>
+          <span style="font-size:14px;font-weight:700;color:#8553E5">รู้จักน้องคนนี้ ↗</span>
+        </div>
+      </article>
+    </sc-for>
+  </div>
+  <sc-if value="{{ noProducts }}" hint-placeholder-val="{{ false }}">
+    <p style="font-size:16px;padding:32px;background:#fff;border-radius:28px;margin:0">ยังไม่มีสินค้าในรายการนี้ ลองเปลี่ยนคำค้นหรือหมวดสินค้าครับ</p>
+  </sc-if>
+</section>
+
+</sc-if>
+<sc-if value="{{ pg.recipes }}" hint-placeholder-val="{{ false }}">
+<section id="recipes" style="padding:16px clamp(12px,3vw,32px)">
+  <div style="background:#8553E5;color:#fff;border-radius:48px;padding:clamp(28px,5vw,64px);overflow:hidden">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:32px;align-items:center;margin-bottom:36px">
+      <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+        <span style="font-size:12px;letter-spacing:2px;font-weight:600;color:#FFE45C">THE SECRET MENU CLUB ✦</span>
+        <h2 style="margin:0;font-size:clamp(48px,7vw,104px);line-height:1;font-weight:800">สูตรลับ<br><span style="color:#FFE45C">GEN Z</span></h2>
+        <p style="margin:0;font-size:17px;line-height:1.7">หิวยัง? รวมไอเดียเมนูวัยรุ่น<br>ทำง่าย อร่อยได้ด้วยเครื่องใช้ EKONO</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ kinds }}" as="k" hint-placeholder-count="4">
+            <button onClick="{{ k.onClick }}" style="border:2px solid #fff;border-radius:999px;padding:9px 18px;font-size:14px;font-weight:600;background:{{ k.bg }};color:{{ k.color }}">{{ k.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <img src="assets/scene4.webp" alt="น้อง EKONO ชวนทำอาหาร" style="width:100%;border-radius:36px;transform:rotate(2deg);box-shadow:-10px 12px 0 #FFE45C">
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px">
+      <sc-for list="{{ recipes }}" as="r" hint-placeholder-count="6">
+        <button onClick="{{ r.onOpen }}" style="text-align:left;border:0;border-radius:28px;background:#fff;color:#2B2140;padding:14px;display:flex;gap:14px;align-items:center;transition:transform .2s" style-hover="transform:translateY(-4px) rotate(-.6deg)">
+          <span aria-hidden="true" style="flex:none;width:84px;height:84px;border-radius:22px;background:{{ r.bg }};display:flex;align-items:center;justify-content:center;font-size:42px">{{ r.emoji }}</span>
+          <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+            <span style="font-size:11px;letter-spacing:1px;font-weight:700;color:#8553E5">SECRET RECIPE NO. {{ r.no }}</span>
+            <strong style="font-size:18px;line-height:1.3">{{ r.name }} {{ r.heart }}</strong>
+            <span style="font-size:13px;color:#6B6378">{{ r.desc }} · ◷ {{ r.time }} นาที</span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+    <sc-if value="{{ noRecipes }}" hint-placeholder-val="{{ false }}">
+      <p style="margin:0;font-size:16px">ยังไม่มีสูตรที่บันทึกในหมวดนี้</p>
+    </sc-if>
+    <p style="margin:24px 0 0;font-size:13px;line-height:1.6;color:#F1EAFF">เวลาทำเป็นค่าประมาณ ปรับตามปริมาณและเครื่องที่ใช้ ทำตามคู่มือเครื่อง และปรุงเนื้อสัตว์ให้สุกทั่วถึง</p>
+  </div>
+</section>
+
+</sc-if>
+<sc-if value="{{ pg.home }}" hint-placeholder-val="{{ true }}">
+<section style="padding:64px 0 24px">
+  <div style="padding:0 clamp(16px,4vw,48px);max-width:1360px;margin:0 auto 24px">
+    <span style="font-size:12px;letter-spacing:2px;font-weight:600;color:#8553E5">LITTLE MOMENTS, BIG SMILES</span>
+    <h2 style="margin:6px 0 0;font-size:clamp(34px,4.4vw,60px);line-height:1.1;font-weight:800">ตั้งแต่มื้อแรก ถึงโมเมนต์เล็กๆ</h2>
+  </div>
+  <div style="display:flex;gap:16px;overflow-x:auto;padding:8px clamp(16px,4vw,48px) 20px;scroll-snap-type:x mandatory">
+    <sc-for list="{{ moments }}" as="s" hint-placeholder-count="4">
+      <button onClick="{{ s.onOpen }}" style="flex:none;width:min(78vw,380px);scroll-snap-align:start;border:0;padding:0;background:none;text-align:left;display:flex;flex-direction:column;gap:10px" style-hover="transform:translateY(-4px)">
+        <img src="{{ s.img }}" alt="{{ s.cap }}" style="width:100%;aspect-ratio:494/334;object-fit:cover;border-radius:32px;display:block">
+        <span style="display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600"><span style="background:{{ s.bg }};border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700">{{ s.no }}</span>{{ s.cap }} ↗</span>
+      </button>
+    </sc-for>
+  </div>
+</section>
+
+<section style="padding:24px clamp(12px,3vw,32px)">
+  <div style="background:#FFF0B0;border-radius:48px;padding:clamp(28px,5vw,56px);display:flex;flex-direction:column;gap:10px">
+    <span style="font-size:12px;letter-spacing:2px;font-weight:600;color:#8553E5">MEET THE EKONO FRIENDS</span>
+    <h2 style="margin:0;font-size:clamp(34px,4.4vw,60px);line-height:1.1;font-weight:800">เพื่อนซี้ครบทีม สนุกทุกวัน</h2>
+    <p style="margin:0;font-size:16px">สองเพื่อนซี้ 04–05 กับแก๊งเครื่องใช้ไฟฟ้าตัวจิ๋ว 11–15</p>
+    <div style="overflow-x:auto;margin-top:16px">
+      <img src="assets/friends.webp" alt="น้อง 04 และ 05 ตัวสูงกว่าเพื่อนเครื่องใช้ไฟฟ้าหมายเลข 11 ถึง 15" style="display:block;width:100%;min-width:640px;border-radius:32px">
+    </div>
+  </div>
+</section>
+
+<section style="padding:48px clamp(16px,4vw,48px) 72px;max-width:1360px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:40px;align-items:center">
+  <img src="assets/tissue-scene.webp" alt="คู่เพื่อนซี้กับทิชชู่ EKONO และเครื่องใช้" style="width:100%;border-radius:40px;transform:rotate(-2deg);box-shadow:10px 12px 0 #CFF3E2">
+  <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+    <span style="font-size:12px;letter-spacing:2px;font-weight:600;color:#8553E5">DAILY BUDDY</span>
+    <h2 style="margin:0;font-size:clamp(34px,4.4vw,56px);line-height:1.1;font-weight:800">หยิบทิชชู่ให้เพื่อน<br>ในวันธรรมดา</h2>
+    <p style="margin:0;font-size:17px;line-height:1.7">ทำอาหารด้วยกัน พักรับลมเย็น แล้วหยิบทิชชู่ให้เพื่อน<br>ให้ EKONO อยู่ในวันธรรมดาที่แสนพิเศษของคุณ</p>
+    <button onClick="{{ openTissue }}" style="border:0;border-radius:999px;padding:16px 26px;font-size:16px;font-weight:600;background:#2B2140;color:#fff;box-shadow:0 6px 0 #FFE45C" style-hover="background:#8553E5">รู้จักทิชชู่ EKONO ↗</button>
+  </div>
+</section>
+</sc-if>
+<div style="min-height:24px"></div>
+</main>
+
+<footer style="background:#2B2140;color:#fff;padding:48px clamp(16px,4vw,48px);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-end">
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <span style="font-size:56px;font-weight:700;letter-spacing:-2px;line-height:1">ekono<span style="color:#FFE45C">•</span></span>
+    <p style="margin:0;font-size:14px;line-height:1.7">SMALL THINGS. BIG FUN.<br>สินค้าและไอเดียที่อยู่ข้างคุณทุกวัน</p>
+  </div>
+  <a href="#home" onClick="{{ goHome }}" style="border:2px solid #fff;border-radius:999px;padding:12px 20px;font-weight:600">กลับหน้าแรก ↑</a>
+</footer>
+
+<sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:50;background:rgba(43,33,64,.6);display:flex;align-items:center;justify-content:center;padding:16px">
+    <div role="dialog" aria-modal="true" onClick="{{ stop }}" style="position:relative;background:#FFF9EE;border-radius:36px;width:100%;max-width:880px;max-height:90vh;overflow:auto;animation:ek-pop .3s ease-out">
+      <button onClick="{{ closeModal }}" aria-label="ปิด" style="position:absolute;top:14px;right:14px;z-index:2;width:48px;height:48px;border-radius:50%;border:0;background:#2B2140;color:#fff;font-size:24px">×</button>
+      <sc-if value="{{ isProductModal }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))">
+          <div style="background:{{ mp.bg }};min-height:300px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+            <img src="{{ mp.bigImg }}" alt="{{ mp.name }}" style="width:100%;height:100%;object-fit:{{ mp.fit }};padding:{{ mp.pad }};animation:{{ floatA }}">
+          </div>
+          <div style="padding:36px 32px;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+            <span style="background:#2B2140;color:#fff;border-radius:999px;padding:5px 12px;font-size:11px;letter-spacing:1px;font-weight:700">{{ mp.label }}</span>
+            <h2 style="margin:0;font-size:34px;line-height:1.15;font-weight:800;padding-right:40px">{{ mp.name }}</h2>
+            <b style="font-size:14px;color:#8553E5">EKONO {{ mp.model }}</b>
+            <p style="margin:0;font-size:15px;line-height:1.75">{{ mp.details }}</p>
+            <button onClick="{{ mp.onSave }}" style="border:0;border-radius:999px;padding:14px 22px;font-size:15px;font-weight:600;background:#2B2140;color:#fff" style-hover="background:#8553E5">{{ mp.saveLabel }}</button>
+            <sc-if value="{{ mp.isCook }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ jumpRecipes }}" style="border:0;background:none;padding:0;font-size:15px;font-weight:700;color:#8553E5">หาเมนูทำด้วยเครื่องนี้ ↗</button>
+            </sc-if>
+            <p style="margin:0;font-size:12px;color:#6B6378">ตรวจสอบคุณสมบัติและวิธีใช้กับคู่มือสินค้าจริงก่อนใช้งาน</p>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isRecipeModal }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:36px clamp(20px,4vw,40px);display:flex;flex-direction:column;gap:14px">
+          <span style="font-size:12px;letter-spacing:2px;font-weight:700;color:#8553E5">สูตรลับ GEN Z / {{ mr.time }} MIN</span>
+          <h2 style="margin:0;font-size:34px;line-height:1.15;font-weight:800;padding-right:48px">{{ mr.emoji }} {{ mr.name }}</h2>
+          <p style="margin:0;font-size:16px">{{ mr.desc }} · สำหรับประมาณ 1 ที่</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px">
+            <div style="background:#fff;border-radius:28px;padding:22px;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+              <h3 style="margin:0;font-size:19px">เตรียมอะไรบ้าง</h3>
+              <ul style="margin:0;padding-left:20px;font-size:15px;line-height:1.9">
+                <sc-for list="{{ mr.ingredients }}" as="x" hint-placeholder-count="4"><li>{{ x }}</li></sc-for>
+              </ul>
+              <button onClick="{{ mr.onProduct }}" style="display:flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:6px 16px 6px 6px;background:{{ mr.pbg }};font-size:14px;font-weight:600">
+                <img src="{{ mr.pimg }}" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;background:#fff">เครื่องใช้: {{ mr.pname }} ↗
+              </button>
+            </div>
+            <div style="background:#FFF0B0;border-radius:28px;padding:22px;display:flex;flex-direction:column;gap:12px">
+              <h3 style="margin:0;font-size:19px">ลงมือกันเลย</h3>
+              <ol style="margin:0;padding-left:20px;font-size:15px;line-height:1.8;display:flex;flex-direction:column;gap:6px">
+                <sc-for list="{{ mr.steps }}" as="x" hint-placeholder-count="3"><li>{{ x }}</li></sc-for>
+              </ol>
+            </div>
+          </div>
+          <button onClick="{{ mr.onSave }}" style="align-self:flex-start;border:0;border-radius:999px;padding:14px 22px;font-size:15px;font-weight:600;background:#2B2140;color:#fff" style-hover="background:#8553E5">{{ mr.saveLabel }}</button>
+          <p style="margin:0;font-size:12px;color:#6B6378">สูตรเป็นไอเดียที่จัดทำขึ้นสำหรับเว็บ ปรับปริมาณให้เหมาะกับขีดความจุและคู่มือของเครื่อง</p>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;background:#2B2140;color:#fff;border-radius:999px;padding:12px 22px;font-size:14px;font-weight:600;box-shadow:0 6px 0 #FFE45C">{{ toast }}</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroLead&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;rice&quot;,&quot;options&quot;:[&quot;rice&quot;,&quot;fan&quot;,&quot;lunchbox&quot;,&quot;egg&quot;,&quot;pot&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;bounce&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;showTicker&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  M = [
+    {id:'rice',num:'11',name:'น้องหม้อหุงข้าว',product:'หม้อหุงข้าว',line:'มื้ออุ่นๆ คู่ใจ',desc:'ข้าวสวยร้อนๆ พร้อมเสิร์ฟในห้องเล็กๆ ของคุณ',bg:'#CFF3E2',deep:'#1F9A6C'},
+    {id:'fan',num:'12',name:'น้องพัดลม',product:'พัดลม',line:'พกความสดชื่น',desc:'ลมเย็นๆ ตามไปทุกที่ ไม่ว่าจะเรียนหรือเที่ยว',bg:'#E9DEFF',deep:'#8553E5'},
+    {id:'lunchbox',num:'13',name:'น้องปิ่นโตไฟฟ้า',product:'ปิ่นโตไฟฟ้า',line:'มื้อโปรดไปด้วยกัน',desc:'อุ่นมื้อโปรดได้ทุกที่ ห่อไปกินกับเพื่อน',bg:'#FFE2D6',deep:'#E8673F'},
+    {id:'egg',num:'14',name:'น้องเครื่องนึ่งไข่',product:'เครื่องนึ่งไข่',line:'เริ่มเช้าแบบสดใส',desc:'ไข่นึ่งง่ายๆ เติมพลังก่อนออกจากห้อง',bg:'#FFF0B0',deep:'#C99700'},
+    {id:'vacuum',num:'16',name:'น้องดูดฝุ่น',product:'เครื่องดูดฝุ่น',line:'ห้องคลีน ฟีลดี',desc:'เพื่อนช่วยดูแลห้องให้สะอาด',bg:'#FFF0B0',deep:'#C99700'},
+    {id:'pot',num:'15',name:'น้องหม้ออเนกประสงค์',product:'หม้ออเนกประสงค์',line:'สนุกได้ทุกเมนู',desc:'รามยอน ต็อกโบกี สุกี้ จบได้ในหม้อเดียว',bg:'#FFD9D6',deep:'#E6463F'}
+  ].map(m => ({...m, img:'mascots-png/EKONO-MASCOT-'+m.num+'.png', thumb:'assets/mascot-'+m.num+'.webp'}));
+  P = [{"id": "lunchbox", "name": "ปิ่นโตไฟฟ้า", "model": "EKN-02", "cat": "cook", "label": "LUNCH BUDDY", "desc": "จัดมื้อของคุณให้น่าหยิบไปทุกวัน", "details": "ปิ่นโตไฟฟ้า EKONO EKN-02 มีสีชมพูและขาวตามเอกสาร ใช้งานอุ่นอาหารตามคู่มือ ตรวจสอบปริมาณน้ำและภาชนะที่ใช้ ห้ามจุ่มฐานไฟฟ้าลงน้ำ", "img": "assets/products/EKONO-01-lunchbox-pink.webp", "bigImg": "assets/products/EKONO-01-lunchbox-pink.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-02", "name": "เครื่องครัว · LUNCHBOX WHITE", "model": "", "cat": "cook", "label": "EASY COOK", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-02-lunchbox-white.webp", "bigImg": "assets/products/EKONO-02-lunchbox-white.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-03", "name": "เครื่องครัว · ORANGE JUICER", "model": "", "cat": "cook", "label": "EASY COOK", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-03-orange-juicer.webp", "bigImg": "assets/products/EKONO-03-orange-juicer.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "egg", "name": "เครื่องนึ่งไข่", "model": "EK-EMK01", "cat": "cook", "label": "BREAKFAST CLUB", "desc": "เพื่อนช่วยเตรียมมื้อเช้า", "details": "เครื่องนึ่งไข่ EKONO EK-EMK01 เติมน้ำและจัดไข่ตามคำแนะนำของรุ่น ระวังไอน้ำขณะเปิดฝา และรอให้เครื่องเย็นก่อนทำความสะอาด", "img": "assets/products/EKONO-04-egg-steamer.webp", "bigImg": "assets/products/EKONO-04-egg-steamer.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-05", "name": "เครื่องครัว · HALOGEN OVEN", "model": "", "cat": "cook", "label": "EASY COOK", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-05-halogen-oven.webp", "bigImg": "assets/products/EKONO-05-halogen-oven.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "pot", "name": "หม้ออเนกประสงค์ 1.6 ลิตร", "model": "EKN-7716B1", "cat": "cook", "label": "EASY COOK", "desc": "ไอเดียมื้ออร่อยในหม้อเดียว", "details": "หม้ออเนกประสงค์ EKONO EKN-7716B1 ความจุ 1.6 ลิตร เหมาะกับเมนูต้มและเมนูน้ำ ใช้อุปกรณ์คนอาหารที่เหมาะกับผิวหม้อ และไม่เติมเกินขีดกำหนด", "img": "assets/products/EKONO-06-multi-pot-white.webp", "bigImg": "assets/products/EKONO-06-multi-pot-white.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-07", "name": "เครื่องครัว · POT 1L GREEN", "model": "", "cat": "cook", "label": "EASY COOK", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-07-pot-1l-green.webp", "bigImg": "assets/products/EKONO-07-pot-1l-green.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-08", "name": "เครื่องครัว · POT 1L BLUE", "model": "", "cat": "cook", "label": "EASY COOK", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-08-pot-1l-blue.webp", "bigImg": "assets/products/EKONO-08-pot-1l-blue.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-09", "name": "เครื่องครัว · POT 28L GREEN", "model": "", "cat": "cook", "label": "EASY COOK", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-09-pot-28l-green.webp", "bigImg": "assets/products/EKONO-09-pot-28l-green.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-10", "name": "เครื่องครัว · POT 28L BLUE", "model": "", "cat": "cook", "label": "EASY COOK", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-10-pot-28l-blue.webp", "bigImg": "assets/products/EKONO-10-pot-28l-blue.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "rice", "name": "หม้อหุงข้าว 0.8 ลิตร", "model": "RP1325N", "cat": "cook", "label": "DORM LIFE", "desc": "เริ่มมื้อโปรดจากข้าวอุ่นๆ", "details": "หม้อหุงข้าว MANUAL EKONO RP1325N ความจุ 0.8 ลิตร เอกสารระบุสีเทา ฟ้า และเขียว ใช้หุงข้าวตามสัดส่วนน้ำและปริมาณที่คู่มือกำหนด", "img": "assets/products/EKONO-11-rice-cooker-green.webp", "bigImg": "assets/products/EKONO-11-rice-cooker-green.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-12", "name": "เครื่องครัว · RICE COOKER BLUE", "model": "", "cat": "cook", "label": "EASY COOK", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-12-rice-cooker-blue.webp", "bigImg": "assets/products/EKONO-12-rice-cooker-blue.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-13", "name": "เครื่องครัว · RICE COOKER GRAY", "model": "", "cat": "cook", "label": "EASY COOK", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-13-rice-cooker-gray.webp", "bigImg": "assets/products/EKONO-13-rice-cooker-gray.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-14", "name": "เครื่องครัว · INDUCTION HOB", "model": "", "cat": "cook", "label": "EASY COOK", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-14-induction-hob.webp", "bigImg": "assets/products/EKONO-14-induction-hob.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-15", "name": "อุปกรณ์ดูแลห้อง · MITE CLEANER KC301", "model": "", "cat": "clean", "label": "CLEAN SPACE", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-15-mite-cleaner-kc301.webp", "bigImg": "assets/products/EKONO-15-mite-cleaner-kc301.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-16", "name": "อุปกรณ์ดูแลห้อง · MITE CLEANER JJ603", "model": "", "cat": "clean", "label": "CLEAN SPACE", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-16-mite-cleaner-jj603.webp", "bigImg": "assets/products/EKONO-16-mite-cleaner-jj603.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-17", "name": "พัดลม · MINI FAN LEFT", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-17-mini-fan-left.webp", "bigImg": "assets/products/EKONO-17-mini-fan-left.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-18", "name": "พัดลม · MINI FAN MIDDLE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-18-mini-fan-middle.webp", "bigImg": "assets/products/EKONO-18-mini-fan-middle.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-19", "name": "พัดลม · MINI FAN RIGHT", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-19-mini-fan-right.webp", "bigImg": "assets/products/EKONO-19-mini-fan-right.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-20", "name": "พัดลม · TURBO FAN PURPLE GRAY", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-20-turbo-fan-purple-gray.webp", "bigImg": "assets/products/EKONO-20-turbo-fan-purple-gray.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-21", "name": "พัดลม · TURBO FAN DARK GRAY", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-21-turbo-fan-dark-gray.webp", "bigImg": "assets/products/EKONO-21-turbo-fan-dark-gray.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "fan", "name": "พัดลมพกพา", "model": "EK-PTB11", "cat": "fan", "label": "ON THE GO", "desc": "พกความเย็นไปกับวันสนุกๆ", "details": "พัดลมพกพา EKONO EK-PTB11 มีสีขาวและสีเทาตามเอกสาร เหมาะสำหรับพกใช้ระหว่างวัน ตรวจสอบระดับแรงลมและแบตเตอรี่จากคู่มือรุ่นก่อนซื้อ", "img": "assets/products/EKONO-22-folding-fan-white-a.webp", "bigImg": "assets/products/EKONO-22-folding-fan-white-a.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-23", "name": "พัดลม · FOLDING FAN GRAY PURPLE A", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-23-folding-fan-gray-purple-a.webp", "bigImg": "assets/products/EKONO-23-folding-fan-gray-purple-a.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-24", "name": "พัดลม · FOLDING FAN GRAY PURPLE B", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-24-folding-fan-gray-purple-b.webp", "bigImg": "assets/products/EKONO-24-folding-fan-gray-purple-b.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-25", "name": "พัดลม · FOLDING FAN WHITE B", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-25-folding-fan-white-b.webp", "bigImg": "assets/products/EKONO-25-folding-fan-white-b.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-26", "name": "พัดลม · FLOOR FAN BLACK", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-26-floor-fan-black.webp", "bigImg": "assets/products/EKONO-26-floor-fan-black.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-27", "name": "พัดลม · DESK FAN CREAM", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-27-desk-fan-cream.webp", "bigImg": "assets/products/EKONO-27-desk-fan-cream.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-28", "name": "พัดลม · DESK FAN PURPLE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-28-desk-fan-purple.webp", "bigImg": "assets/products/EKONO-28-desk-fan-purple.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-29", "name": "พัดลม · DESK TURBO FAN CREAM", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-29-desk-turbo-fan-cream.webp", "bigImg": "assets/products/EKONO-29-desk-turbo-fan-cream.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-30", "name": "พัดลม · DESK TURBO FAN PURPLE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-30-desk-turbo-fan-purple.webp", "bigImg": "assets/products/EKONO-30-desk-turbo-fan-purple.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-31", "name": "พัดลม · FRAME FAN PURPLE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-31-frame-fan-purple.webp", "bigImg": "assets/products/EKONO-31-frame-fan-purple.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-32", "name": "พัดลม · FRAME FAN ORANGE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-32-frame-fan-orange.webp", "bigImg": "assets/products/EKONO-32-frame-fan-orange.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-33", "name": "พัดลม · CLIP FAN GRAY PURPLE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-33-clip-fan-gray-purple.webp", "bigImg": "assets/products/EKONO-33-clip-fan-gray-purple.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-34", "name": "พัดลม · CLIP FAN CREAM", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-34-clip-fan-cream.webp", "bigImg": "assets/products/EKONO-34-clip-fan-cream.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-35", "name": "พัดลม · PORTABLE 8IN WHITE A", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-35-portable-8in-white-a.webp", "bigImg": "assets/products/EKONO-35-portable-8in-white-a.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-36", "name": "พัดลม · PORTABLE 8IN WHITE B", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-36-portable-8in-white-b.webp", "bigImg": "assets/products/EKONO-36-portable-8in-white-b.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-37", "name": "พัดลม · PORTABLE 8IN WHITE C", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-37-portable-8in-white-c.webp", "bigImg": "assets/products/EKONO-37-portable-8in-white-c.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-38", "name": "พัดลม · PORTABLE 8IN WHITE D", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-38-portable-8in-white-d.webp", "bigImg": "assets/products/EKONO-38-portable-8in-white-d.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-39", "name": "พัดลม · MONSTER HANDHELD BLUE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-39-monster-handheld-blue.webp", "bigImg": "assets/products/EKONO-39-monster-handheld-blue.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-40", "name": "พัดลม · MONSTER HANDHELD PINK", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-40-monster-handheld-pink.webp", "bigImg": "assets/products/EKONO-40-monster-handheld-pink.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-41", "name": "พัดลม · MONSTER DESK BLUE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-41-monster-desk-blue.webp", "bigImg": "assets/products/EKONO-41-monster-desk-blue.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-42", "name": "พัดลม · MONSTER DESK WHITE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-42-monster-desk-white.webp", "bigImg": "assets/products/EKONO-42-monster-desk-white.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-43", "name": "พัดลม · TURBO FAN RED", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-43-turbo-fan-red.webp", "bigImg": "assets/products/EKONO-43-turbo-fan-red.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-44", "name": "พัดลม · TURBO FAN NAVY", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-44-turbo-fan-navy.webp", "bigImg": "assets/products/EKONO-44-turbo-fan-navy.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-45", "name": "พัดลม · PTB15 PINK", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-45-ptb15-pink.webp", "bigImg": "assets/products/EKONO-45-ptb15-pink.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-46", "name": "พัดลม · PTB15 GREEN", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-46-ptb15-green.webp", "bigImg": "assets/products/EKONO-46-ptb15-green.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-47", "name": "พัดลม · PTB15 YELLOW", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-47-ptb15-yellow.webp", "bigImg": "assets/products/EKONO-47-ptb15-yellow.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-48", "name": "พัดลม · PTB15 BLUE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-48-ptb15-blue.webp", "bigImg": "assets/products/EKONO-48-ptb15-blue.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-49", "name": "พัดลม · DESK16 WHITE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-49-desk16-white.webp", "bigImg": "assets/products/EKONO-49-desk16-white.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-50", "name": "พัดลม · DESK16 BEIGE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-50-desk16-beige.webp", "bigImg": "assets/products/EKONO-50-desk16-beige.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-51", "name": "พัดลม · DESK16 GRAY", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-51-desk16-gray.webp", "bigImg": "assets/products/EKONO-51-desk16-gray.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-52", "name": "พัดลม · DESK12 WHITE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-52-desk12-white.webp", "bigImg": "assets/products/EKONO-52-desk12-white.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-53", "name": "พัดลม · DESK12 BEIGE", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-53-desk12-beige.webp", "bigImg": "assets/products/EKONO-53-desk12-beige.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-54", "name": "พัดลม · DESK12 BLACK", "model": "", "cat": "fan", "label": "COOL BUDDY", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-54-desk12-black.webp", "bigImg": "assets/products/EKONO-54-desk12-black.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "vacuum", "name": "เครื่องดูดฝุ่นและดูดน้ำ", "model": "WD10L", "cat": "clean", "label": "CLEAN SPACE", "desc": "ห้องเป็นระเบียบ พร้อมเริ่มวันใหม่", "details": "เครื่องดูดฝุ่นและดูดน้ำ EKONO WD10L ขนาด 10 ลิตร เลือกไส้กรองและอุปกรณ์ให้ตรงกับการดูดแห้งหรือดูดเปียกตามคู่มือ", "img": "assets/products/EKONO-55-wetdry-vacuum-10l.webp", "bigImg": "assets/products/EKONO-55-wetdry-vacuum-10l.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "ekono-56", "name": "อุปกรณ์ดูแลห้อง · WETDRY VACUUM 20L", "model": "", "cat": "clean", "label": "CLEAN SPACE", "desc": "เลือกสีและรูปแบบที่เข้ากับชีวิตของคุณ", "details": "ภาพจัดบรรยากาศอ้างอิงสินค้าจากไฟล์ EKONO กรุณาตรวจสอบรุ่น สี และคุณสมบัติกับสินค้าจริงก่อนซื้อ", "img": "assets/products/EKONO-56-wetdry-vacuum-20l.webp", "bigImg": "assets/products/EKONO-56-wetdry-vacuum-20l.webp", "bg": "#FFF7EF", "fit": "contain", "pad": "0"}, {"id": "tissue", "name": "กระดาษทิชชู่เช็ดหน้า", "model": "FACIAL TISSUE", "cat": "daily", "label": "DAILY BUDDY", "desc": "แพ็กเหลืองลายไก่ เพื่อนของทุกมื้อ", "details": "กระดาษทิชชู่เช็ดหน้า EKONO อ้างอิงแพ็กสินค้าที่ได้รับ สีเหลืองลายแม่ไก่และลูกไก่ ตรวจสอบรายละเอียดจำนวนแผ่น ชั้นกระดาษ และโปรโมชันบนฉลากสินค้าจริง", "img": "assets/tissue-scene.webp", "bigImg": "assets/tissue-scene.webp", "bg": "#FFE45C", "fit": "cover", "pad": "0"}];
+  R = [
+    ['ข้าวหน้าไข่ชีส','🍳','savory','15','pot','ไข่ 2 ฟอง|ข้าวสุก 1 ถ้วย|ชีส 1 แผ่น|น้ำ 120 มล.|ซีอิ๊วเล็กน้อย','ต้มน้ำในหม้ออเนกประสงค์จนเดือดอ่อนๆ ปรุงรสเล็กน้อย|ตีไข่แล้วเทลงหม้อ คนเบาๆ จนไข่สุกทั่ว|ใส่ชีส ปิดความร้อนแล้วตักราดข้าวสุก','มื้ออิ่มง่าย ฟีลคาเฟ่ในหอ'],
+    ['รามยอนนมชีส','🍜','savory','15','pot','เส้นรามยอน 1 ห่อ|น้ำ 300 มล.|นมจืด 100 มล.|ชีส 1 แผ่น|ผักตามชอบ','ต้มน้ำให้เดือด ใส่เส้นและผัก ต้มตามเวลาบนห่อ|เติมนมและเครื่องปรุงทีละน้อย คนและใช้ความร้อนอ่อน ระวังล้น|เมื่อเส้นสุก ใส่ชีส คนให้ละลายแล้วปิดเครื่อง','ครีมมี่แบบทำเองได้'],
+    ['โอ๊ตกล้วยโกโก้','🍌','sweet','10','pot','ข้าวโอ๊ต 40 กรัม|นมจืด 200 มล.|กล้วย 1 ผล|ผงโกโก้ 1 ช้อนชา','ใส่นม ข้าวโอ๊ต และโกโก้ลงหม้อ ใช้ความร้อนอ่อน|คนต่อเนื่องจนโอ๊ตนุ่ม ระวังนมติดก้นและเดือดล้น|ปิดเครื่อง ตักใส่ชามแล้ววางกล้วยหั่นด้านบน','เช้าที่อยากกินหวานนิดๆ'],
+    ['ข้าวไก่ขิงหม้อเดียว','🍚','savory','35','rice','ข้าวสาร ½ ถ้วยตวงหม้อ|ไก่หั่นชิ้นเล็ก 80 กรัม|ขิง 3 แว่น|น้ำตามขีดหม้อ|ซีอิ๊วเล็กน้อย','ซาวข้าว เติมน้ำตามขีดที่ตรงกับข้าวในคู่มือ|ใส่ขิงและไก่ชิ้นเล็ก ไม่เกินความจุสูงสุด แล้วหุงตามปกติ|ตรวจสอบว่าไก่สุกทั่วถึง อุณหภูมิแกนกลางอย่างน้อย 74°C หากยังไม่สุกให้ปรุงต่อจนสุกก่อนกิน','หอมขิง อิ่มสบาย'],
+    ['ไข่ต้มแซนด์วิชโยเกิร์ต','🥪','light','20','egg','ไข่ 2 ฟอง|ขนมปัง 2 แผ่น|โยเกิร์ตรสธรรมชาติ 1 ช้อนโต๊ะ|ผักสลัด|พริกไทยเล็กน้อย','นึ่งไข่จนสุกแข็งโดยเติมน้ำและตั้งเครื่องตามคู่มือ|พักไข่ให้เย็น ปอกและบดผสมโยเกิร์ตกับพริกไทย|ประกบขนมปังกับผักและไส้ไข่ รับประทานทันที','มื้อเบา พกไปเรียนได้'],
+    ['สุกี้น้ำไก่นุ่ม','🥬','light','20','pot','ไก่ชิ้นบาง 100 กรัม|วุ้นเส้นแช่น้ำ 30 กรัม|ผักกาดขาว|น้ำ 400 มล.|น้ำจิ้มสุกี้ตามชอบ','ต้มน้ำให้เดือด ใส่ไก่ชิ้นบาง ต้มจนสุกทั่วถึง|เติมผักและวุ้นเส้น ต้มจนผักนุ่มและเส้นสุก|ตักใส่ชาม เติมน้ำจิ้มสุกี้ตามชอบ','หม้อเดียว ผักแน่นๆ'],
+    ['ต็อกโบกีชีส','🧀','savory','20','pot','แป้งต็อก 100 กรัม|น้ำ 250 มล.|โคชูจัง 1 ช้อนชา|ซอสมะเขือเทศ 1 ช้อนโต๊ะ|ชีส 1 แผ่น','ต้มน้ำแล้วละลายโคชูจังกับซอสมะเขือเทศ|ใส่แป้งต็อก ต้มและคนตามเวลาที่ระบุบนห่อจนแป้งสุกนุ่ม|ใส่ชีส คนให้ละลายแล้วปิดเครื่อง','สายเกาหลีต้องลอง'],
+    ['โจ๊กข้าวสุกใส่ไข่','🥣','light','20','pot','ข้าวสุก 1 ถ้วย|น้ำ 450 มล.|ไข่ 1 ฟอง|ต้นหอม|ซีอิ๊วเล็กน้อย','ต้มน้ำกับข้าวสุกจนข้าวนุ่ม ระหว่างต้มคนสม่ำเสมอ|ตีไข่แล้วเทลงไป คนและต้มจนไข่สุกทั่ว|ปรุงรสแล้วโรยต้นหอมก่อนเสิร์ฟ','มื้ออุ่นๆ วันอยากพัก'],
+    ['มักกะโรนีซุปมะเขือเทศ','🍅','savory','25','pot','มักกะโรนี 60 กรัม|มะเขือเทศหั่น 1 ผล|แครอตหั่นเล็ก|น้ำ 500 มล.|ซอสมะเขือเทศ 1 ช้อนโต๊ะ','ต้มน้ำ ใส่แครอตและมะเขือเทศ ต้มจนเริ่มนุ่ม|เติมมักกะโรนี ต้มตามเวลาบนห่อและคนเป็นระยะ|ปรุงด้วยซอสมะเขือเทศและเกลือเล็กน้อย เสิร์ฟเมื่อเส้นสุก','สีสด กินเพลิน'],
+    ['พุดดิ้งขนมปังหม้ออุ่น','🍞','sweet','15','pot','ขนมปังฉีก 1 แผ่น|นม 200 มล.|กล้วยครึ่งผล|อบเชยเล็กน้อย','อุ่นนมด้วยความร้อนอ่อน คนตลอดโดยไม่ปล่อยให้เดือดล้น|ใส่ขนมปังฉีกและกล้วยบด คนจนเนื้อนุ่มข้น|ปิดเครื่อง ตักใส่ถ้วย โรยอบเชยและพักให้อุ่นก่อนกิน','ขนมเนื้อนุ่มแบบโฮมเมด'],
+    ['ข้าวปั้นทูน่าสาหร่าย','🍙','light','30','rice','ข้าวสาร ½ ถ้วยตวงหม้อ|น้ำตามขีด|ทูน่ากระป๋องพร้อมกิน 50 กรัม|สาหร่าย|มายองเนสเล็กน้อย','หุงข้าวตามสัดส่วนน้ำของคู่มือ พักให้ข้าวอุ่นพอจับได้|สะเด็ดน้ำทูน่า คลุกมายองเนสเล็กน้อย|ใช้มือสะอาดหรือถุงมือปั้นข้าวใส่ไส้ทูน่าและห่อสาหร่าย','ชิ้นเล็ก ถ่ายรูปน่ารัก'],
+    ['ไข่ต้มดองซีอิ๊วแบบสุก','🥚','savory','20','egg','ไข่ 2 ฟอง|ซีอิ๊ว 1 ช้อนโต๊ะ|น้ำดื่ม 3 ช้อนโต๊ะ|น้ำตาล ½ ช้อนชา|ต้นหอม','นึ่งไข่จนสุกแข็งตามคู่มือ แล้วพักให้เย็นและปอกเปลือก|ผสมซีอิ๊ว น้ำดื่ม และน้ำตาลให้ละลาย ราดไข่ในกล่องสะอาด|ปิดฝาแช่เย็น 1–2 ชั่วโมงก่อนกิน และกินให้หมดภายในวันถัดไป','เวอร์ชันไข่สุก กินคู่ข้าวร้อนๆ']
+  ].map((a,i) => ({id:'r'+i,no:String(i+1).padStart(2,'0'),name:a[0],emoji:a[1],kind:a[2],time:a[3]+(i===11?' + แช่เย็น':''),product:a[4],ingredients:a[5].split('|'),steps:a[6].split('|'),desc:a[7],bg:['#CFF3E2','#E9DEFF','#FFE2D6','#FFF0B0','#FFD9D6'][i%5]}));
+  V = [
+    {id:'dorm',no:'01 / DORM LIFE',t1:'เด็กหอ',t2:'ก็เอาอยู่',sub:'ทำอาหารง่าย ในพื้นที่เล็ก ↗',m:'11',bg:'#CFF3E2',title:'เด็กหอก็เอาอยู่',items:['rice','pot','lunchbox']},
+    {id:'cook',no:'02 / EASY COOK',t1:'เชฟมือใหม่',t2:'ใจมันได้',sub:'เริ่มเมนูโปรดของคุณ ↗',m:'15',bg:'#FFD9D6',title:'เชฟมือใหม่ใจมันได้',items:['pot','egg','rice']},
+    {id:'go',no:'03 / ON THE GO',t1:'ออกไปเล่น',t2:'ให้สุดวัน',sub:'เพื่อนพกพาไปทุกที่ ↗',m:'13',bg:'#FFE2D6',title:'ออกไปเล่นให้สุดวัน',items:['fan','lunchbox','tissue']},
+    {id:'clean',no:'04 / CLEAN SPACE',t1:'ห้องคลีน',t2:'ฟีลดี',sub:'เติมความสบายให้ห้อง ↗',m:'12',bg:'#E9DEFF',title:'ห้องคลีนฟีลดี',items:['vacuum','tissue']}
+  ];
+  S = [['01','ลมเย็นพกไปทุกที่','fan','#FFD9D6'],['02','ชิลล์ที่บ้าน','fan','#E9DEFF'],['03','ข้าวสวยร้อนๆ','rice','#CFF3E2'],['04','มื้อหม้อเดียว','pot','#FFF0B0'],['05','ไข่นึ่งยามเช้า','egg','#E9DEFF'],['06','ปิ่นโตมื้อโปรด','lunchbox','#FFD9D6'],['07','ห้องคลีนฟีลดี','vacuum','#FFF0B0'],['08','ปิกนิกรับลม','fan','#CFF3E2']];
+  HERO_POS = [{left:'-2%',top:'6%',w:'20%'},{left:'30%',top:'74%',w:'22%'},{left:'54%',top:'74%',w:'22%'},{left:'78%',top:'62%',w:'24%'}];
+
+  load() { try { const s = JSON.parse(localStorage.getItem('ekono-picks') || '[]'); return Array.isArray(s) ? s : []; } catch (e) { return []; } }
+  state = { page: (()=>{ try { return localStorage.getItem('ekono-page') || 'home'; } catch (e) { return 'home'; } })(), saved: this.load(), filter:'all', query:'', savedOnly:false, kind:'all', vibe:null, buddy:'rice', modal:null, toast:'' };
+
+  toggle(id) {
+    const on = !this.state.saved.includes(id);
+    const saved = on ? [...this.state.saved, id] : this.state.saved.filter(x => x !== id);
+    try { localStorage.setItem('ekono-picks', JSON.stringify(saved)); } catch (e) {}
+    this.setState({ saved });
+    this.showToast(on ? 'บันทึกไว้แล้ว ♡' : 'นำออกจากรายการแล้ว');
+  }
+  showToast(t) { clearTimeout(this._tt); this.setState({ toast: t }); this._tt = setTimeout(() => this.setState({ toast: '' }), 2000); }
+  open(type, id) { this.setState({ modal: { type, id } }); }
+  go(page) { try { localStorage.setItem('ekono-page', page); } catch (e) {} this.setState({ page }); window.scrollTo({ top: 0 }); }
+  scrollTo(id) { const el = document.getElementById(id); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' }); }
+  componentWillUnmount() { clearTimeout(this._tt); }
+
+  renderVals() {
+    const st = this.state, pr = this.props;
+    const isSaved = id => st.saved.includes(id);
+    const bounce = pr.bounce ?? true;
+    const floatA = bounce ? 'ek-float 3.2s ease-in-out infinite' : 'none';
+    const leadId = pr.heroLead ?? 'rice';
+    const lead = this.M.find(m => m.id === leadId) || this.M[0];
+    const pick = id => () => { this.setState({ buddy: id }); this.go('buddies'); };
+    const heroOthers = this.M.filter(m => m.id !== lead.id).map((m, i) => ({ ...this.HERO_POS[i], name: m.name, thumb: m.thumb, onPick: pick(m.id), anim: bounce ? `ek-wobble ${3 + i * 0.4}s ease-in-out ${i * 0.3}s infinite` : 'none' }));
+    const b = this.M.find(m => m.id === st.buddy);
+    const buddy = { ...b, onOpen: () => this.open('product', b.id), onSave: () => this.toggle(b.id), saveLabel: isSaved(b.id) ? '♥ บันทึกแล้ว' : '♡ บันทึกไว้' };
+    const buddies = this.M.map(m => ({ ...m, active: m.id === st.buddy, ring: m.id === st.buddy ? '#2B2140' : 'transparent', onPick: () => this.setState({ buddy: m.id }) }));
+    const vibes = this.V.map(v => ({ ...v, img: 'assets/mascot-' + v.m + '.webp', active: st.vibe === v.id, ring: st.vibe === v.id ? '#2B2140' : 'transparent', onPick: () => this.setState({ vibe: v.id }) }));
+    const vv = this.V.find(v => v.id === st.vibe);
+    const vibeResult = vv ? { title: vv.title, items: vv.items.map(id => { const p = this.P.find(x => x.id === id); return { name: p.name, img: p.img, bg: p.bg, onOpen: () => this.open('product', id) }; }) } : { title: '', items: [] };
+    const q = st.query.toLowerCase();
+    const products = this.P.filter(p => (st.filter === 'all' || p.cat === st.filter) && (!st.savedOnly || isSaved(p.id)) && (p.name + p.model).toLowerCase().includes(q))
+      .map(p => ({ ...p, isSaved: isSaved(p.id), heart: isSaved(p.id) ? '♥' : '♡', heartColor: isSaved(p.id) ? '#E6463F' : '#2B2140', onOpen: () => this.open('product', p.id), onSave: e => { e.stopPropagation(); this.toggle(p.id); } }));
+    const chip = (active, light) => active ? (light ? { bg: '#FFE45C', color: '#2B2140' } : { bg: '#2B2140', color: '#fff' }) : (light ? { bg: 'transparent', color: '#fff' } : { bg: '#fff', color: '#2B2140' });
+    const filters = [['all','ทั้งหมด'],['cook','ทำอาหาร'],['fan','พัดลม'],['clean','ดูแลห้อง'],['daily','ของใช้ประจำวัน']].map(([k, label]) => ({ label, ...chip(st.filter === k && !st.savedOnly), onClick: () => this.setState({ filter: k, savedOnly: false }) }));
+    const kinds = [['all','ทุกเมนู'],['savory','ของคาว'],['sweet','ของหวาน'],['light','มื้อเบาๆ']].map(([k, label]) => ({ label, ...chip(st.kind === k, true), onClick: () => this.setState({ kind: k }) }));
+    const recipes = this.R.filter(r => (st.kind === 'all' || r.kind === st.kind) && (!st.savedOnly || isSaved(r.id))).map(r => ({ ...r, heart: isSaved(r.id) ? '♥' : '', onOpen: () => this.open('recipe', r.id) }));
+    const moments = this.S.map(([no, cap, pid, bg], i) => ({ no, cap, bg, img: 'assets/scene' + (i + 1) + '.webp', onOpen: () => this.open('product', pid) }));
+    let mp = {}, mr = { ingredients: [], steps: [] };
+    if (st.modal && st.modal.type === 'product') {
+      const p = this.P.find(x => x.id === st.modal.id);
+      mp = { ...p, isCook: p.cat === 'cook', saveLabel: isSaved(p.id) ? '♥ นำออกจากรายการ' : '♡ บันทึกสินค้า', onSave: () => this.toggle(p.id) };
+    }
+    if (st.modal && st.modal.type === 'recipe') {
+      const r = this.R.find(x => x.id === st.modal.id), p = this.P.find(x => x.id === r.product);
+      mr = { ...r, pname: p.name, pimg: p.img, pbg: p.bg, onProduct: () => this.open('product', p.id), onSave: () => this.toggle(r.id), saveLabel: isSaved(r.id) ? '♥ นำสูตรออกจากรายการ' : '♡ เก็บสูตรนี้ไว้' };
+    }
+    return {
+      floatA, heroLead: { ...lead, onPick: pick(lead.id) }, heroOthers, showTicker: pr.showTicker ?? true,
+      buddy, buddies, vibes, hasVibe: !!vv, vibeResult,
+      query: st.query, onSearch: e => this.setState({ query: e.target.value }), filters, products, noProducts: products.length === 0,
+      kinds, recipes, noRecipes: recipes.length === 0, moments,
+      savedCount: st.saved.length, savedOnly: st.savedOnly,
+      savedBtnBg: st.savedOnly ? '#2B2140' : '#fff', savedBtnColor: st.savedOnly ? '#fff' : '#2B2140',
+      toggleSavedOnly: () => { const v = !st.savedOnly; this.setState({ savedOnly: v }); this.go('products'); this.showToast(v ? 'แสดงสินค้าและสูตรที่บันทึกไว้' : 'แสดงทั้งหมด'); },
+      modalOpen: !!st.modal, isProductModal: !!(st.modal && st.modal.type === 'product'), isRecipeModal: !!(st.modal && st.modal.type === 'recipe'), mp, mr,
+      closeModal: () => this.setState({ modal: null }), stop: e => e.stopPropagation(),
+      jumpRecipes: () => { this.setState({ modal: null, kind: 'all' }); this.go('recipes'); },
+      pg: { home: st.page === 'home', buddies: st.page === 'buddies', match: st.page === 'match', products: st.page === 'products', recipes: st.page === 'recipes' },
+      navItems: [['home','หน้าแรก','#FFE45C'],['buddies','แก๊งน้อง','#E9DEFF'],['match','เลือกคู่ใจ','#CFF3E2'],['products','สินค้า','#FFE2D6'],['recipes','สูตรลับ GEN Z','#FFF0B0']].map(([id,label,c]) => ({ label, current: st.page === id ? 'page' : undefined, bg: st.page === id ? c : 'transparent', hover: c, weight: st.page === id ? 700 : 500, onClick: () => this.go(id) })),
+      goHome: e => { e.preventDefault(); this.go('home'); }, goMatch: () => this.go('match'), goRecipes: () => this.go('recipes'),
+      openTissue: () => this.open('product', 'tissue'),
+      hasToast: !!st.toast, toast: st.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
