@@ -38,9 +38,8 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #8553
 </style>
 </helmet>
 <header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px clamp(16px,4vw,48px);background:rgba(255,249,238,.88);backdrop-filter:blur(14px)">
-  <a href="#home" onClick="{{ goHome }}" style="display:flex;flex-direction:column;line-height:1">
-    <span style="font-size:38px;font-weight:700;letter-spacing:-2px">ekono<span style="color:#8553E5">•</span></span>
-    <span style="font-size:8px;letter-spacing:2px;font-weight:600;margin-top:2px">LET’S PLAY EVERY DAY</span>
+  <a href="#home" onClick="{{ goHome }}" aria-label="EKONO PLAY — กลับหน้าแรก" style="display:flex;align-items:center;line-height:0">
+    <img src="assets/logo-ekono-play.png?v=1" alt="ekono PLAY!! — LET'S PLAY EVERYDAY" style="height:clamp(44px,6vw,60px);width:auto;display:block">
   </a>
   <nav class="bottom-nav" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
     <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
@@ -284,7 +283,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #8553
 
 <footer style="background:#2B2140;color:#fff;padding:48px clamp(16px,4vw,48px);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-end">
   <div style="display:flex;flex-direction:column;gap:8px">
-    <span style="font-size:56px;font-weight:700;letter-spacing:-2px;line-height:1">ekono<span style="color:#FFE45C">•</span></span>
+    <span style="display:inline-block;background:#FFF9EE;border-radius:20px;padding:12px 18px;line-height:0;align-self:flex-start"><img src="assets/logo-ekono-play.png?v=1" alt="ekono PLAY!! — LET'S PLAY EVERYDAY" style="height:72px;width:auto;display:block"></span>
     <p style="margin:0;font-size:14px;line-height:1.7">SMALL THINGS. BIG FUN.<br>สินค้าและไอเดียที่อยู่ข้างคุณทุกวัน</p>
   </div>
   <a href="#home" onClick="{{ goHome }}" style="border:2px solid #fff;border-radius:999px;padding:12px 20px;font-weight:600">กลับหน้าแรก ↑</a>
